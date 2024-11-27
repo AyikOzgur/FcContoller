@@ -14,12 +14,12 @@ FcController::~FcController()
 {
 }
 
-bool FcController::init(std::string port, int baudrate)
+bool FcController::init(std::string port, int baudrate, int flags)
 {
     return false;
 }
 
-bool FcController::executeCommand(FcCommand command)
+bool FcController::executeCommand(FcCommand command , int value)
 {
     return false;
 }

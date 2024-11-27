@@ -13,6 +13,12 @@
 #define DEFAULT_PORT "/dev/ttyUSB0"
 #endif
 
+enum Flags
+{
+    NONE = 0,
+    NO_BLOCKING = 1,
+};
+
 enum class FcCommand
 {
     /**
@@ -29,8 +35,17 @@ enum class FcCommand
      * @brief Disarm the drone.
      */
     DISARM,
-};
 
+    /**
+     * @brief Internal thread interval in milliseconds.
+     * If FcController is initialized with Flags::NO_BLOCKING, FcController will
+     * create an internal thread to read data from the flight controller at this interval.
+     * Any request of data will return the last data read from the flight controller.
+     * Default value is 20 milliseconds.
+     * @param int interval in milliseconds.
+     */
+    THREAD_INTERVAL,
+};
 struct Attitude
 {
     /// Roll angle (deg).
@@ -89,14 +104,15 @@ public:
      * @param int baudrate the baudrate to connect to the flight controller.
      * @return True if the flight controller is initialized successfully.
      */
-    bool init(std::string port = DEFAULT_PORT, int baudrate = 115200);
+    bool init(std::string port = DEFAULT_PORT, int baudrate = 115200, int flags = 0);
 
     /**
      * @brief Execute a command on the flight controller.
      * @param FcCommand command the command to execute.
+     * @param int value the value of the command if needed.
      * @return True if the command is executed successfully.
      */
-    bool executeCommand(FcCommand command);
+    bool executeCommand(FcCommand command, int value = 0);
 
     /**
      * @brief Get the attitude of the flight controller.
