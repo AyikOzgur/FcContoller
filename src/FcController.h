@@ -45,33 +45,46 @@ enum class FcCommand
      * @param int interval in milliseconds.
      */
     THREAD_INTERVAL,
-};
-struct Attitude
-{
-    /// Roll angle (deg).
-    float roll{0.0f};
-    /// Pitch angle (deg).
-    float pitch{0.0f};
-    /// Yaw angle (deg).
-    float yaw{0.0f};
-    /// Altitude (cm).
-    float altitude{0.0f};
-};
 
-struct RawImu
-{
-    /// Accelerometer in x-axis (m/s^2).
-    float accX{0.0f};
-    /// Accelerometer in y-axis (m/s^2).
-    float accY{0.0f};
-    /// Accelerometer in z-axis (m/s^2).
-    float accZ{0.0f};
-    /// Gyroscope in x-axis (deg/s).
-    float gyroX{0.0f};
-    /// Gyroscope in y-axis (deg/s).
-    float gyroY{0.0f};
-    /// Gyroscope in z-axis (deg/s).
-    float gyroZ{0.0f};
+    /**
+     * @brief Set the rc channels of the flight controller.
+     * @param std::vector<uint16_t> rcChannels the rc channels to set.
+     */
+    SET_RC_CHANNELS,
+
+    /**
+     * @brief Get the rc channels of the flight controller.
+     * @param std::vector<uint16_t> rcChannels the rc channels of the flight controller.
+     */
+    GET_RC_CHANNELS,
+
+    /**
+     * @brief Get the attitude of the flight controller.
+     * @param std::vector<float> Attitude of the flight controller.
+     * Elements 0 - 2: roll (deg), pitch (deg), yaw (deg).
+     */
+    GET_ATTITUDE,
+
+    /**
+     * @brief Get the raw imu data of the flight controller.
+     * @param std::vector<float> RawImu the raw imu data of the flight controller.
+     * Element 0 - 2: accx (m/s^2), accy (m/s^2), accz (m/s^2),
+     * Element 3 - 5: gyrox (deg/s), gyroy (deg/s), gyroz (deg/s),
+     * Element 6 - 8: magx (Gauss), magy (Gauss), magz (Gauss).
+     */
+    GET_RAW_IMU,
+
+    /**
+     * @brief Get altitude of the flight controller.
+     * @param Altitude in cm.
+     */
+    GET_ALTITUDE,
+
+    /**
+     * @brief Get the battery voltage of the flight controller.
+     * @param Voltage in 0.1V.
+     */
+    GET_BATTERY_VOLTAGE,
 };
 
 
@@ -89,16 +102,6 @@ public:
     static std::string getVersion();
 
     /**
-     * @brief Constructor.
-     */
-    FcController();
-
-    /**
-     * @brief Destructor.
-     */
-    ~FcController();
-
-    /**
      * @brief Initialize the flight controller.
      * @param std::string port the port to connect to the flight controller.
      * @param int baudrate the baudrate to connect to the flight controller.
@@ -109,38 +112,25 @@ public:
     /**
      * @brief Execute a command on the flight controller.
      * @param FcCommand command the command to execute.
-     * @param int value the value of the command if needed.
      * @return True if the command is executed successfully.
      */
-    bool executeCommand(FcCommand command, int value = 0);
+    bool executeCommand(FcCommand command);
 
     /**
-     * @brief Get the attitude of the flight controller.
-     * @param Attitude attitude of the flight controller.
-     * @return True if the attitude is retrieved successfully.
+     * @brief Execute a command on the flight controller.
+     * @param FcCommand command the command to execute.
+     * @param data std::vector<int> arguments the arguments of the command.
+     * @return True if the command is executed successfully.
      */
-    bool getAttitude(Attitude& attitude);
+    bool executeCommand(FcCommand command, std::vector<int32_t> &data);
 
     /**
-     * @brief Get the raw imu data of the flight controller.
-     * @param RawImu rawImu the raw imu data of the flight controller.
-     * @return True if the raw imu data is retrieved successfully.
+     * @brief Execute a command on the flight controller.
+     * @param FcCommand command the command to execute.
+     * @param data std::vector<float> arguments the arguments of the command.
+     * @return True if the command is executed successfully.
      */
-    bool getRawImu(RawImu& rawImu);
-
-    /**
-     * @brief Set the rc channels of the flight controller.
-     * @param std::vector<uint16_t> rcChannels the rc channels to set.
-     * @return True if the rc channels are set successfully.
-     */
-    bool setRcChannels(std::vector<uint16_t>& rcChannels);
-
-    /**
-     * @brief Get the rc channels of the flight controller.
-     * @param std::vector<uint16_t> rcChannels the rc channels of the flight controller.
-     * @return True if the rc channels are retrieved successfully.
-     */
-    bool getRcChannels(std::vector<uint16_t>& rcChannels);
+    bool executeCommand(FcCommand command, std::vector<float> &data);
 
     /**
      * @brief Check if the flight controller is armed.
