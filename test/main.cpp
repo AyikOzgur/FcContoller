@@ -29,12 +29,18 @@ int main()
     {
         int command = 0;
         std::cout << "Commands:" << std::endl;
+        std::cout << "-1 - Exit" << std::endl;
         std::cout << static_cast<int>(FcCommand::GET_ALTITUDE) << " - Get altitude" << std::endl;
         std::cout << static_cast<int>(FcCommand::GET_BATTERY_VOLTAGE) << " - Get battery voltage" << std::endl;
         std::cout << static_cast<int>(FcCommand::GET_RAW_IMU) << " - Get raw imu" << std::endl;
         std::cout << static_cast<int>(FcCommand::GET_ATTITUDE) << " - Get attitude" << std::endl;
         std::cout << "Enter command : ";
         std::cin >> command;
+
+        if (command == -1)
+        {
+            break;
+        }
 
         std::vector<float> data;
         if (!fcController.executeCommand(static_cast<FcCommand>(command), data))
@@ -59,9 +65,13 @@ int main()
         }
         else if (command == static_cast<int>(FcCommand::GET_ATTITUDE))
         {
-            std::cout << "Attitude: " << data[0] << std::endl;
+            std::cout << "Roll: " << data[0] << " Pitch: " << data[1] << " Yaw: " << data[2] << std::endl;
+        }
+        else 
+        {
+            std::cout << "Invalid command." << std::endl;
         }
     }
 
-
+    return 0;
 }
