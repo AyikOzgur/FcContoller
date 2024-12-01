@@ -50,7 +50,7 @@ bool FcController::executeCommand(FcCommand command, std::vector<float> &data)
 {
 
     if (command != FcCommand::GET_ALTITUDE && command != FcCommand::GET_BATTERY_VOLTAGE 
-        && command != FcCommand::GET_ALTITUDE && command != FcCommand::GET_RAW_IMU)
+        && command != FcCommand::GET_ATTITUDE && command != FcCommand::GET_RAW_IMU)
     {
         return false;
     }

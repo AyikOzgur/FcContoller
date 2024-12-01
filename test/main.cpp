@@ -6,8 +6,15 @@ int main()
     std::cout << "FcController v" << FcController::getVersion() << " test" << std::endl;
 
     FcController fcController;
+
+#if defined(_WIN32)
+    std::string port = "COM7";
+#else
     std::string port = "/dev/ttyUSB0";
+#endif
+
     int baudrate = 115200;
+
 
     int useDefaultPort = 1; 
     std::cout << "Default port: " << port << ", " << baudrate << std::endl;
@@ -15,14 +22,19 @@ int main()
     std::cin >> useDefaultPort;
     if (useDefaultPort == 0)
     {
-        std::cout << "Enter port: ";
+        std::cout << "Enter port (/dev/ttyUSB0 for linux , COM1 for windows): ";
         std::cin >> port;
-    }   
+
+#if defined(_WIN32)
+        port = "\\\\.\\" + port;
+#endif
+
+    }
 
     if (!fcController.init(port, baudrate))
     {
         std::cout << "ERROR: Could not initialize flight controller." << std::endl;
-        return 1;
+        return -1;
     }
 
     while (true)
