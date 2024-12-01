@@ -122,7 +122,7 @@ public:
      * @param data std::vector<int> arguments the arguments of the command.
      * @return True if the command is executed successfully.
      */
-    bool executeCommand(FcCommand command, std::vector<int32_t> &data);
+    bool executeCommand(FcCommand command, std::vector<uint16_t> &data);
 
     /**
      * @brief Execute a command on the flight controller.

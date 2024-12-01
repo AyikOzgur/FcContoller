@@ -23,7 +23,7 @@ bool FcController::executeCommand(FcCommand command)
     return false;
 }
 
-bool FcController::executeCommand(FcCommand command, std::vector<int32_t> &data)
+bool FcController::executeCommand(FcCommand command, std::vector<uint16_t> &data)
 {
     if (command != FcCommand::SET_RC_CHANNELS)
     {
@@ -39,7 +39,6 @@ bool FcController::executeCommand(FcCommand command, std::vector<int32_t> &data)
 
     if (!m_serialPort.write(bufferWrite, bufferWriteSize))
     {
-        std::cout << "ERROR: Could not write command to serial port." << std::endl;
         return false;
     }
 
@@ -90,6 +89,10 @@ bool FcController::executeCommand(FcCommand command, std::vector<float> &data)
 
     // Clear the input data vector.
     data.clear();
+
+    // Read internal buffer. To clean it. This ensures that we are not gonna process old data.
+    uint8_t bufferRead[1024]{0};
+    int bytesRead = m_serialPort.read(bufferRead, sizeof(bufferRead));
 
     int retryCount = 10;
     while (retryCount-- > 0)
