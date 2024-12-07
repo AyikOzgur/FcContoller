@@ -8,7 +8,7 @@ int main()
     FcController fcController;
 
 #if defined(_WIN32)
-    std::string port = "COM7";
+    std::string port = "COM5";
 #else
     std::string port = "/dev/ttyUSB0";
 #endif
@@ -46,12 +46,29 @@ int main()
         std::cout << static_cast<int>(FcCommand::GET_BATTERY_VOLTAGE) << " - Get battery voltage" << std::endl;
         std::cout << static_cast<int>(FcCommand::GET_RAW_IMU) << " - Get raw imu" << std::endl;
         std::cout << static_cast<int>(FcCommand::GET_ATTITUDE) << " - Get attitude" << std::endl;
+        std::cout << static_cast<int>(FcCommand::SET_RC_CHANNELS) << " - Set rc channels" << std::endl;
         std::cout << "Enter command : ";
         std::cin >> command;
 
         if (command == -1)
         {
             break;
+        }
+        else if (command == static_cast<int>(FcCommand::SET_RC_CHANNELS))
+        {
+            std::vector<uint16_t> data;
+            for (int i = 0; i < 8; i++)
+            {
+                uint16_t rcValue = 1300;
+                data.push_back(rcValue);
+            }
+
+            if (!fcController.executeCommand(static_cast<FcCommand>(command), data))
+            {
+                std::cout << "ERROR: Could not execute command." << std::endl;
+                continue;
+            }
+            continue;
         }
 
         std::vector<float> data;
