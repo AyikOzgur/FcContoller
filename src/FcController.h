@@ -144,4 +144,6 @@ private:
     cr::clib::SerialPort m_serialPort;
     /// Msp parser object.
     MspParser m_parser;
+    /// Modes of the flight controller.
+    MspModes m_modes;
 };

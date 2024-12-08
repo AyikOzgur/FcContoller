@@ -14,6 +14,38 @@ bool FcController::init(std::string port, int baudrate, int flags)
         return false;
     }
 
+    // Clear the input buffer.
+    uint8_t buffer[1024]{0};
+    int bytesRead = m_serialPort.read(buffer, sizeof(buffer));
+
+    // Command to get the modes.
+    size_t size = 0;
+    if (!m_parser.encode(buffer, size, MspCommand::MSP_MODE_RANGES))
+    {
+        return false;
+    }
+
+    int retryCount = 10;
+    bool modesReceived = false;
+    while(!modesReceived && retryCount-- > 0)
+    {
+        if (!m_serialPort.write(buffer, size))
+        {
+            return false;
+        }
+
+        // Read the modes.
+        bytesRead = m_serialPort.read(buffer, sizeof(buffer));
+        for (int i = 0; i < bytesRead; i++)
+        {
+            if (m_parser.decodeModes(buffer[i], m_modes))
+            {
+                modesReceived = true;
+                break;
+            }
+        }
+    }
+
     return true;
 }
 
@@ -121,6 +153,7 @@ bool FcController::executeCommand(FcCommand command, std::vector<float> &data)
                 }
             }
         }
+
     }
 
     return false;

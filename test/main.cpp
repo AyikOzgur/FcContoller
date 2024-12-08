@@ -15,7 +15,6 @@ int main()
 
     int baudrate = 115200;
 
-
     int useDefaultPort = 1; 
     std::cout << "Default port: " << port << ", " << baudrate << std::endl;
     std::cout << "Use default port? (1 - yes, 0 - no): ";
@@ -66,7 +65,6 @@ int main()
             if (!fcController.executeCommand(static_cast<FcCommand>(command), data))
             {
                 std::cout << "ERROR: Could not execute command." << std::endl;
-                continue;
             }
             continue;
         }
