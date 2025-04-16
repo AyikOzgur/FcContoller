@@ -1,0 +1,6 @@
+[submodule "3rdparty/SerialPort"]
+	path = 3rdparty/SerialPort
+	url = https://github.com/ConstantRobotics-Ltd/SerialPort.git
+[submodule "3rdparty/MspParser"]
+	path = 3rdparty/MspParser
+	url = git@github.com:AyikOzgur/MspParser.git
