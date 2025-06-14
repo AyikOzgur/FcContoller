@@ -85,6 +85,8 @@ enum class FcCommand
      * @param Voltage in 0.1V.
      */
     GET_BATTERY_VOLTAGE,
+
+    SET_RECTANGLE_POS
 };
 
 

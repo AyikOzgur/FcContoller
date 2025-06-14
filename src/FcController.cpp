@@ -57,14 +57,20 @@ bool FcController::executeCommand(FcCommand command)
 
 bool FcController::executeCommand(FcCommand command, std::vector<uint16_t> &data)
 {
-    if (command != FcCommand::SET_RC_CHANNELS)
-    {
-        return false;
-    }
+    //if (command != FcCommand::SET_RC_CHANNELS )
+    //{
+    //    return false;
+    //}
+
+    MspCommand mspCommandId;
+    if (command == FcCommand::SET_RC_CHANNELS)
+        mspCommandId = MspCommand::MSP_SET_RAW_RC;
+    else if (command == FcCommand::SET_RECTANGLE_POS)
+        mspCommandId = MspCommand::MSP_SET_RECTANGLE_POS;
 
     uint8_t bufferWrite[1024]{0};
     size_t bufferWriteSize = 0;
-    if (!m_parser.encode(bufferWrite, bufferWriteSize, MspCommand::MSP_SET_RAW_RC, data))
+    if (!m_parser.encode(bufferWrite, bufferWriteSize, mspCommandId, data))
     {
         return false;
     }

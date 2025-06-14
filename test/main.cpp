@@ -8,7 +8,7 @@ int main()
     FcController fcController;
 
 #if defined(_WIN32)
-    std::string port = "COM5";
+    std::string port = "COM6";
 #else
     std::string port = "/dev/ttyUSB0";
 #endif
@@ -46,6 +46,8 @@ int main()
         std::cout << static_cast<int>(FcCommand::GET_RAW_IMU) << " - Get raw imu" << std::endl;
         std::cout << static_cast<int>(FcCommand::GET_ATTITUDE) << " - Get attitude" << std::endl;
         std::cout << static_cast<int>(FcCommand::SET_RC_CHANNELS) << " - Set rc channels" << std::endl;
+        std::cout << static_cast<int>(FcCommand::SET_RECTANGLE_POS) << " - Set rectangle pos" << std::endl;
+
         std::cout << "Enter command : ";
         std::cin >> command;
 
@@ -61,6 +63,28 @@ int main()
                 uint16_t rcValue = 1300;
                 data.push_back(rcValue);
             }
+
+            if (!fcController.executeCommand(static_cast<FcCommand>(command), data))
+            {
+                std::cout << "ERROR: Could not execute command." << std::endl;
+            }
+            continue;
+        }
+        else if (command == static_cast<int>(FcCommand::SET_RECTANGLE_POS))
+        {
+            int posX = 0;
+            std::cout << "Enter pos x : ";
+            std::cin >> posX;
+            std::cout << std::endl;
+
+            int posY = 0;
+            std::cout << "Enter pos y : ";
+            std::cin >> posY;
+            std::cout << std::endl;
+
+            std::vector<uint16_t> data;
+            data.push_back((uint16_t)posX);
+            data.push_back((uint16_t)posY);
 
             if (!fcController.executeCommand(static_cast<FcCommand>(command), data))
             {
