@@ -85,7 +85,13 @@ enum class FcCommand
      * @param Voltage in 0.1V.
      */
     GET_BATTERY_VOLTAGE,
-
+    
+    /**
+     * @brief Set the position of rectangle on OSD.
+     * @param posX X coordinate in grid.
+     * @param posY Y coordinate in grid.
+     * @remark THIS IS A CUSTOM COMMAND IT IS ONLY SUPPORTED BY CUSTOM BETAFLIGHT.
+     */
     SET_RECTANGLE_POS
 };
 
