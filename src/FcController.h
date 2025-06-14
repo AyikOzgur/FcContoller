@@ -105,31 +105,32 @@ public:
 
     /**
      * @brief Initialize the flight controller.
-     * @param std::string port the port to connect to the flight controller.
-     * @param int baudrate the baudrate to connect to the flight controller.
+     * @param port port to connect to the flight controller.
+     * @param baudrate baudrate to connect to the flight controller.
+     * @param flag Not used for now.
      * @return True if the flight controller is initialized successfully.
      */
     bool init(std::string port = DEFAULT_PORT, int baudrate = 115200, int flags = 0);
 
     /**
      * @brief Execute a command on the flight controller.
-     * @param FcCommand command the command to execute.
+     * @param FcCommand the command to execute.
      * @return True if the command is executed successfully.
      */
     bool executeCommand(FcCommand command);
 
     /**
      * @brief Execute a command on the flight controller.
-     * @param FcCommand command the command to execute.
-     * @param data std::vector<int> arguments the arguments of the command.
+     * @param FcCommand the command to execute.
+     * @param data the arguments of the command.
      * @return True if the command is executed successfully.
      */
     bool executeCommand(FcCommand command, std::vector<uint16_t> &data);
 
     /**
      * @brief Execute a command on the flight controller.
-     * @param FcCommand command the command to execute.
-     * @param data std::vector<float> arguments the arguments of the command.
+     * @param FcCommand the command to execute.
+     * @param data Response of flight controller for sent command.
      * @return True if the command is executed successfully.
      */
     bool executeCommand(FcCommand command, std::vector<float> &data);

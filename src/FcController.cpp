@@ -21,18 +21,14 @@ bool FcController::init(std::string port, int baudrate, int flags)
     // Command to get the modes.
     size_t size = 0;
     if (!m_parser.encode(buffer, size, MspCommand::MSP_MODE_RANGES))
-    {
         return false;
-    }
 
     int retryCount = 10;
     bool modesReceived = false;
     while(!modesReceived && retryCount-- > 0)
     {
         if (!m_serialPort.write(buffer, size))
-        {
             return false;
-        }
 
         // Read the modes.
         bytesRead = m_serialPort.read(buffer, sizeof(buffer));
@@ -57,10 +53,11 @@ bool FcController::executeCommand(FcCommand command)
 
 bool FcController::executeCommand(FcCommand command, std::vector<uint16_t> &data)
 {
-    //if (command != FcCommand::SET_RC_CHANNELS )
-    //{
-    //    return false;
-    //}
+    if (command != FcCommand::SET_RC_CHANNELS &&
+        command != FcCommand::SET_RECTANGLE_POS)
+    {
+        return false;
+    }
 
     MspCommand mspCommandId;
     if (command == FcCommand::SET_RC_CHANNELS)
@@ -71,14 +68,10 @@ bool FcController::executeCommand(FcCommand command, std::vector<uint16_t> &data
     uint8_t bufferWrite[1024]{0};
     size_t bufferWriteSize = 0;
     if (!m_parser.encode(bufferWrite, bufferWriteSize, mspCommandId, data))
-    {
         return false;
-    }
 
     if (!m_serialPort.write(bufferWrite, bufferWriteSize))
-    {
         return false;
-    }
 
     return true;
 }
@@ -98,32 +91,23 @@ bool FcController::executeCommand(FcCommand command, std::vector<float> &data)
     switch (command)
     {
     case FcCommand::GET_ALTITUDE:
-    {
         mspCommandSent = MspCommand::MSP_ALTITUDE;
-        m_parser.encode(bufferWrite, bufferWriteSize, MspCommand::MSP_ALTITUDE);
         break;
-    }
     case FcCommand::GET_BATTERY_VOLTAGE:
-    {
         mspCommandSent = MspCommand::MSP_ANALOG;
-        m_parser.encode(bufferWrite, bufferWriteSize, MspCommand::MSP_ANALOG);
         break;
-    }
     case FcCommand::GET_RAW_IMU:
-    {
         mspCommandSent = MspCommand::MSP_RAW_IMU;
-        m_parser.encode(bufferWrite, bufferWriteSize, MspCommand::MSP_RAW_IMU);
         break;
-    }
     case FcCommand::GET_ATTITUDE:
-    {
         mspCommandSent = MspCommand::MSP_ATTITUDE;
-        m_parser.encode(bufferWrite, bufferWriteSize, MspCommand::MSP_ATTITUDE);
         break;
-    }
     default:
         return false;
     }
+
+    m_parser.encode(bufferWrite, bufferWriteSize, mspCommandSent);
+
 
     // Clear the input data vector.
     data.clear();
@@ -144,9 +128,7 @@ bool FcController::executeCommand(FcCommand command, std::vector<float> &data)
         uint8_t bufferRead[1024]{0};
         int bytesRead = m_serialPort.read(bufferRead, sizeof(bufferRead));
         if (bytesRead <= 0)
-        {
             continue;
-        }
 
         MspCommand mspCommandReceived;
         for (int i = 0; i < bytesRead; i++)

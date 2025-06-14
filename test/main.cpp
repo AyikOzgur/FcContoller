@@ -46,7 +46,7 @@ int main()
         std::cout << static_cast<int>(FcCommand::GET_RAW_IMU) << " - Get raw imu" << std::endl;
         std::cout << static_cast<int>(FcCommand::GET_ATTITUDE) << " - Get attitude" << std::endl;
         std::cout << static_cast<int>(FcCommand::SET_RC_CHANNELS) << " - Set rc channels" << std::endl;
-        std::cout << static_cast<int>(FcCommand::SET_RECTANGLE_POS) << " - Set rectangle pos" << std::endl;
+        std::cout << static_cast<int>(FcCommand::SET_RECTANGLE_POS) << " - Set rectangle pos" << std::endl; // This is a custom test command.
 
         std::cout << "Enter command : ";
         std::cin >> command;
@@ -93,7 +93,7 @@ int main()
             continue;
         }
 
-        std::vector<float> data;
+        std::vector<float> data; // Data returned by FC.
         if (!fcController.executeCommand(static_cast<FcCommand>(command), data))
         {
             std::cout << "ERROR: Could not execute command." << std::endl;
