@@ -27,7 +27,7 @@ bool FcController::init(std::string port, int baudrate, int flags)
     bool modesReceived = false;
     while(!modesReceived && retryCount-- > 0)
     {
-        if (!m_serialPort.write(buffer, size))
+        if (!m_serialPort.write(buffer, (uint32_t)size))
             return false;
 
         // Read the modes.
@@ -70,7 +70,7 @@ bool FcController::executeCommand(FcCommand command, std::vector<uint16_t> &data
     if (!m_parser.encode(bufferWrite, bufferWriteSize, mspCommandId, data))
         return false;
 
-    if (!m_serialPort.write(bufferWrite, bufferWriteSize))
+    if (!m_serialPort.write(bufferWrite, (uint32_t)bufferWriteSize))
         return false;
 
     return true;
@@ -119,7 +119,7 @@ bool FcController::executeCommand(FcCommand command, std::vector<float> &data)
     int retryCount = 10;
     while (retryCount-- > 0)
     {
-        if (!m_serialPort.write(bufferWrite, bufferWriteSize))
+        if (!m_serialPort.write(bufferWrite, (uint32_t)bufferWriteSize))
         {
             std::cout << "ERROR: Could not write command to serial port." << std::endl;
             return false;

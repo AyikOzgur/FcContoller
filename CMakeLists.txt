@@ -57,3 +57,5 @@ endif()
 if (${PARENT}_FC_CONTROLLER_TEST)
     add_subdirectory(test)
 endif()
+
+add_subdirectory(osd_move_rectangle)
