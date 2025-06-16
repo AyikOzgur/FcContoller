@@ -38,14 +38,14 @@ int main()
         return -1;
     }
 
-    const int arenaWidth = 23;
-    const int arenaHeight = 11;
+    const int arenaWidth = 25;
+    const int arenaHeight = 9;
     int posX = 0;
     int posY = 0;
     int dx = 1;
     int dy = 1;
-    int rectangleWidth = 6;
-    int rectangleHeight = 6;
+    int rectangleWidth = 4;
+    int rectangleHeight = 4;
 
     std::vector<uint16_t> data(4);
 
