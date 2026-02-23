@@ -25,12 +25,6 @@ SET(${PARENT}_SUBMODULE_CACHE_OVERWRITE OFF CACHE BOOL "" FORCE)
 ## CONFIGURATION
 ## 3rd-party submodules configuration
 ################################################################################
-SET(${PARENT}_SUBMODULE_SERIAL_PORT                    ON  CACHE BOOL "" FORCE)
-if (${PARENT}_SUBMODULE_SERIAL_PORT)
-    SET(${PARENT}_SERIAL_PORT                          ON  CACHE BOOL "" FORCE)
-    SET(${PARENT}_SERIAL_PORT_TEST                     OFF CACHE BOOL "" FORCE)
-endif()
-
 SET(${PARENT}_SUBMODULE_MSP_PARSER                     ON  CACHE BOOL "" FORCE)
 if (${PARENT}_SUBMODULE_MSP_PARSER)
     SET(${PARENT}_MSP_PARSER                           ON  CACHE BOOL "" FORCE)
@@ -41,10 +35,16 @@ endif()
 ## INCLUDING SUBDIRECTORIES
 ## Adding subdirectories according to the 3rd-party configuration
 ################################################################################
-if (${PARENT}_SERIAL_PORT)
-    add_subdirectory(SerialPort)
-endif()
-
 if (${PARENT}_MSP_PARSER)
     add_subdirectory(MspParser)
 endif()
+
+
+# Fetch asio standalone
+include(FetchContent)
+FetchContent_Declare(
+    asio
+    GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
+    GIT_TAG asio-1-18-1
+)
+FetchContent_MakeAvailable(asio)

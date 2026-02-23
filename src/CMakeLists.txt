@@ -45,6 +45,8 @@ if (NOT TARGET ${PROJECT_NAME})
     add_library(${PROJECT_NAME} ${SOURCES})
 endif()
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_BINARY_DIR}/_deps/asio-src/asio/include)
+target_compile_definitions(${PROJECT_NAME} PUBLIC ASIO_STANDALONE)
 
 
 
@@ -53,4 +55,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 ## linking all dependencies
 ###############################################################################
 target_link_libraries (${PROJECT_NAME} MspParser)
-target_link_libraries (${PROJECT_NAME} SerialPort)
+if(UNIX)
+    target_link_libraries(${PROJECT_NAME} pthread)
+endif()

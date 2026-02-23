@@ -87,11 +87,16 @@ enum class FcCommand
     GET_BATTERY_VOLTAGE,
     
     /**
-     * @brief Set the position of rectangle on OSD.
-     * @param posX X coordinate in grid.
-     * @param posY Y coordinate in grid.
-     * @param width rectangle width in grid.
-     * @param height rectangle height in grid.
+     * @brief Set the position of rectangle on OSD with sub-grid precision.
+     * Coordinates are in sub-character units:
+     *   Horizontal: 4 sub-units per character cell (~3px each in 12px-wide cell)
+     *   Vertical:   3 sub-units per character cell (~6px each in 18px-tall cell)
+     * Custom font characters (vertical/horizontal line variants) provide
+     * ~4x horizontal and ~3x vertical precision over grid-only positioning.
+     * @param posX X coordinate in sub-grid units (0..cols*4).
+     * @param posY Y coordinate in sub-grid units (0..rows*3).
+     * @param width rectangle width in sub-grid units.
+     * @param height rectangle height in sub-grid units.
      * @remark THIS IS A CUSTOM COMMAND IT IS ONLY SUPPORTED BY CUSTOM BETAFLIGHT.
      */
     SET_RECTANGLE_POS
